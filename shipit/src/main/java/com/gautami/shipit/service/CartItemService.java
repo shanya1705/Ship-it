@@ -23,7 +23,7 @@ public class CartItemService {
     @Autowired
     ProductRepository productRepository;
 
-    public Cart addItemToCart(CartItemDto cartItemDto, Long cartId) {
+    public void addItemToCart(CartItemDto cartItemDto, Long cartId) {
         Cart cart=cartRepository.findById(cartId).get();
         if(cart==null){
             throw new NotFound("Cart for the user does not exist: "+cartId);
@@ -40,7 +40,22 @@ public class CartItemService {
         cart.setTotalPrice(cartItemDto.getQuantity()*cartItemDto.getPrice());
         List<CartItem> allItems=cart.getItems();
         allItems.add(cartItem);
-        return cartRepository.save(cart);
+        cartRepository.save(cart);
+
+    }
+
+    public void removeItemFromCart(Long cartId, Long cartItemId) {
+        CartItem cartItem=cartItemRepository.findById(cartItemId).get();
+        if(cartItem==null){
+            throw new NotFound("Cart Item not found "+cartId);
+        }
+        Cart cart =cartRepository.findById(cartId).get();
+        if(cart==null){
+            throw new NotFound("Cart withe id not found: "+cartId);
+        }
+       cart.setTotalPrice(cart.getTotalPrice()-(cartItem.getPrice()*cartItem.getQuantity()));
+        cartItemRepository.deleteById(cartItemId);
+        cartRepository.save(cart);
 
     }
 }

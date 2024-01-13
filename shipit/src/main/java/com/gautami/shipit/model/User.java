@@ -34,6 +34,10 @@ public class User implements UserDetails{
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role", referencedColumnName = "id"))
 	private Set<Role> roles = new HashSet<>();
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "cart_id", referencedColumnName = "id")
+	private Cart cart;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		

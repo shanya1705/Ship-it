@@ -32,7 +32,7 @@ public class ProductService {
         Category category=categoryRepository.findByCategoryName(productDto.getCategory());
         Product product=new Product();
         if(category!=null){
-            product.setPrice(product.getPrice());
+            product.setPrice(productDto.getPrice());
             product.setName(productDto.getName());
             product.setCategory(category);
             return productRepository.save(product);

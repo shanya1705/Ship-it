@@ -5,10 +5,7 @@ import com.gautami.shipit.model.Cart;
 import com.gautami.shipit.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cart")
@@ -20,5 +17,11 @@ public class CartController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public Cart createCart(@RequestBody CartDto cartDto){
         return cartService.createCart(cartDto);
+    }
+
+    @GetMapping("/id/{cartId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public Cart getCartForUser(@PathVariable Long cartId){
+        return cartService.getCartForUser(cartId);
     }
 }

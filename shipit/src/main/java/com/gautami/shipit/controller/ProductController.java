@@ -17,37 +17,34 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/all")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public List<Product> getAllProducts(){
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
+
     @GetMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public Product getProductById(@PathVariable Long id){
+    public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public Product addProduct(@RequestBody ProductDto product){
+    public Product addProduct(@RequestBody ProductDto product) {
         return productService.addProduct(product);
     }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public void deleteProduct(@PathVariable Long id){
-         productService.deleteProduct(id);
+    public void deleteProduct(@PathVariable Long id) {
+        productService.deleteProduct(id);
     }
 
     @PutMapping("/id/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public Product updateProduct(@RequestBody ProductDto productDto,@PathVariable Long id){
-        return productService.updateProduct(productDto,id);
+    public Product updateProduct(@RequestBody ProductDto productDto, @PathVariable Long id) {
+        return productService.updateProduct(productDto, id);
     }
-
-
-
-
 
 
 }

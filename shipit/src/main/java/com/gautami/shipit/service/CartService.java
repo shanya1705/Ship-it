@@ -1,6 +1,8 @@
 package com.gautami.shipit.service;
 
 import com.gautami.shipit.dto.CartDto;
+import com.gautami.shipit.exceptions.AlreadyExists;
+import com.gautami.shipit.exceptions.NotFound;
 import com.gautami.shipit.model.Cart;
 import com.gautami.shipit.model.User;
 import com.gautami.shipit.repository.CartRepository;
@@ -17,11 +19,20 @@ public class CartService {
     UserRepository userRepository;
 
     public Cart createCart(CartDto cartDto) {
-        Cart cart=new Cart();
+        User user = userRepository.findById(cartDto.getUserId()).get();
+        if(user.getCart()!=null){
+            throw new AlreadyExists("A cart for the user already exists");
+        }
+        Cart cart = new Cart();
         cart.setTotalPrice(cartDto.getTotalPrice());
-        User user=userRepository.findById(cartDto.getUserId()).get();
         cart.setUser(user);
-        return cartRepository.save(cart);
+        Cart newCart = cartRepository.save(cart);
+        user.setCart(newCart);
+        userRepository.save(user);
+        return newCart;
+    }
 
+    public Cart getCartForUser(Long cartId) {
+        return cartRepository.findById(cartId).orElseThrow(() -> new NotFound("cart with the given id not found"));
     }
 }

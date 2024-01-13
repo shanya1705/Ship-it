@@ -6,6 +6,7 @@ import com.gautami.shipit.model.CartItem;
 import com.gautami.shipit.service.CartItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,8 +17,14 @@ public class CartItemController {
 
     @PostMapping("/add/{cartId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public Cart addItemToCart(@RequestBody CartItemDto cartItemDto, @PathVariable Long cartId){
-        return cartItemService.addItemToCart(cartItemDto,cartId);
+    public void addItemToCart(@RequestBody CartItemDto cartItemDto, @PathVariable Long cartId){
+         cartItemService.addItemToCart(cartItemDto,cartId);
+    }
+
+    @DeleteMapping("/delete/{cartId}/{cartItemId}")
+    @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    public void RemoveCartItem(@PathVariable Long cartId, @PathVariable Long cartItemId){
+        cartItemService.removeItemFromCart(cartId,cartItemId);
     }
 
 }
