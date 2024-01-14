@@ -30,7 +30,7 @@ public class UserServiceConfig {
 		http
 			.csrf().disable()
 			.authorizeHttpRequests()
-			.antMatchers("/user/register","/auth/login").permitAll()
+			.antMatchers("/user/register","/auth/login","/hystrix/**").permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()
